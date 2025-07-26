@@ -17,6 +17,6 @@ object NavigationItems {
     val adminItems = listOf(
         NavigationItem("Dashboard", Icons.Default.Dashboard, "admin_dashboard"),
         NavigationItem("Usuarios", Icons.Default.People, "admin_users"),
-        NavigationItem("Productos", Icons.Default.CardTravel, "client_products")
+        NavigationItem("Productos", Icons.Default.CardTravel, "admin_products")
     )
 }

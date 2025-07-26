@@ -2,6 +2,8 @@ package com.example.loginepa.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.loginepa.data.AppDatabase
 import com.example.loginepa.data.product.ProductDao
 import com.example.loginepa.data.user.UserDao
@@ -15,7 +17,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DataSourceModule {
-
+    val MIGRATION_1_2 = object : Migration(1, 2) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            // ejemplo: agregar columna nueva
+            database.execSQL("ALTER TABLE products ADD COLUMN newField TEXT NOT NULL DEFAULT ''")
+        }
+    }
     @Provides
     @Singleton
     fun provideAppDatabase(@ApplicationContext context : Context) : AppDatabase {
@@ -24,7 +31,7 @@ object DataSourceModule {
             AppDatabase::class.java,
             "app_database"
         )
-            .fallbackToDestructiveMigration()
+            .addMigrations(MIGRATION_1_2)
             .build()
     }
 

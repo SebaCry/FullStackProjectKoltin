@@ -85,4 +85,6 @@ dependencies {
 
     implementation(libs.compose.google.fonts)
 
+    implementation("io.coil-kt:coil-compose:2.7.0")
+
 }

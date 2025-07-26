@@ -11,7 +11,7 @@ import com.example.loginepa.data.user.User
 import com.example.loginepa.data.user.UserRole
 
 @Database(entities = [User::class, Product::class], version = 2)
-@TypeConverters
+@TypeConverters(UserRoleConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao() : UserDao
     abstract fun productDao() : ProductDao

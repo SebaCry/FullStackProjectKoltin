@@ -31,7 +31,7 @@ class ProductRepository @Inject constructor(
         val productDb = localDataSource.getProductById(product.id)
 
         if (product.id <= 0) {
-            return Result.success("Usuario eliminado correctamente")
+            return Result.success("Usuario no encontrado")
         }
 
         return if (productDb == null) {
@@ -45,5 +45,6 @@ class ProductRepository @Inject constructor(
     fun getAllProducts() : Flow<List<Product>> {
         return localDataSource.getAllProducts()
     }
+
 
 }
