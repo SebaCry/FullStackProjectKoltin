@@ -36,10 +36,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.loginepa.navigation.componentside.SideNavigation
 import com.example.loginepa.navigation.typesnavigation.AdminNavigation
-import com.example.loginepa.navigation.layouts.NavigationViewModel
 
 @Composable
-fun AdminNavigationLayout(navigationViewModel: NavigationViewModel) {
+fun AdminNavigationLayout(navigationViewModel: ViewModelNavigation) {
     val navController = rememberNavController()
     val navigationItems by navigationViewModel.navigationItems.collectAsStateWithLifecycle()
     val navBackStackEntry by navController.currentBackStackEntryAsState()

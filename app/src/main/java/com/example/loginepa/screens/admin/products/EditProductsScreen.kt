@@ -32,7 +32,6 @@ fun EditProductsScreen(
     productId : Int,
     viewModelProduct: ViewModelProduct = hiltViewModel()
 ) {
-    val productCurrent = viewModelProduct.getProductById(productId).collectAsStateWithLifecycle()
     val productState by viewModelProduct.productState.collectAsStateWithLifecycle()
 
     LaunchedEffect(productId) {

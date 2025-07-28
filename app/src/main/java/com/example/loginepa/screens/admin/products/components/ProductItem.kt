@@ -46,8 +46,8 @@ import com.example.loginepa.screens.admin.products.ViewModelProduct
 @Composable
 fun ProductItem(
     product : Product,
-    onEdit : () -> Unit,
-    onDelete : () -> Unit
+    onEdit : ((Product) -> Unit)? = null,
+    onDelete : ((Product) -> Unit)? = null
 ) {
     Card(
         modifier = Modifier
@@ -108,24 +108,21 @@ fun ProductItem(
             }
 
             Row {
-                IconButton(onClick = onEdit) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Editar"
-                    )
+                onEdit?.let { editAction ->
+                    IconButton(onClick = { editAction(product)}) {
+                        Icon(Icons.Default.Edit, contentDescription = "Editar")
+                    }
                 }
-                IconButton(onClick = onDelete) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = "Eliminar"
-                    )
+
+                onDelete?.let { deleteAction ->
+                    IconButton(onClick = { deleteAction(product)}) {
+                        Icon(Icons.Default.Delete, contentDescription = "Eliminar")
+                    }
                 }
             }
         }
     }
 }
-
-
 fun getImageResourceId(imageName: String): Int {
     return when {
         imageName.contains("keyboard", ignoreCase = true) -> R.drawable.keyboard

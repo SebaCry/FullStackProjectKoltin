@@ -32,9 +32,6 @@ class ViewModelRegister @Inject constructor(
         _uiState.value = _uiState.value.copy(password = password, errorMessage = null)
     }
 
-    fun onRoleChange(role : UserRole) {
-        _uiState.value = _uiState.value.copy(selectedRole = role, errorMessage = null)
-    }
 
     fun register() {
         val currentState = _uiState.value
@@ -57,7 +54,7 @@ class ViewModelRegister @Inject constructor(
             userName = currentState.username,
             email = currentState.email,
             password = currentState.password,
-            role = currentState.selectedRole
+            role = UserRole.CLIENT
         )
 
         viewModelScope.launch {

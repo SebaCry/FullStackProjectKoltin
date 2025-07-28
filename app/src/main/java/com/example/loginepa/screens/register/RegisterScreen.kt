@@ -84,38 +84,6 @@ fun RegisterScreen(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth()
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                RadioButton(
-                    selected = uiState.selectedRole == UserRole.CLIENT,
-                    onClick = {
-                        viewModel.onRoleChange(UserRole.CLIENT)
-                    }
-                )
-                Text(
-                    text = "Cliente"
-                )
-            }
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                RadioButton(
-                    selected = uiState.selectedRole == UserRole.ADMIN,
-                    onClick = {
-                        viewModel.onRoleChange(UserRole.ADMIN)
-                    }
-                )
-                Text(
-                    text = "Administrador"
-                )
-            }
-        }
-
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(

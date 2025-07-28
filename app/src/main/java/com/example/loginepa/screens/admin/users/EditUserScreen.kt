@@ -1,15 +1,20 @@
 package com.example.loginepa.screens.admin.users
 
+import android.R.attr.label
 import android.R.attr.password
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -18,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -27,6 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.loginepa.data.user.UserRole
 
 @Composable
 fun EditUserScreen(
@@ -34,19 +41,13 @@ fun EditUserScreen(
     userId  :Int,
     viewModel: ViewModelUser = hiltViewModel()
 ) {
-    val user by viewModel.getUserById(userId).collectAsStateWithLifecycle(initialValue = null)
-    var userName by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var isInitialized by remember { mutableStateOf(false) }
-    val context = LocalContext.current
+    val adminUserState by viewModel.adminUserState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(user){
-        if (!isInitialized && user != null) {
-            userName = user!!.userName
-            email = user!!.email
-            password = user!!.password
-            isInitialized = true
+    LaunchedEffect(userId) {
+        viewModel.getUserById(userId).collect { user ->
+            user?.let {
+                viewModel.setUser(it)
+            }
         }
     }
 
@@ -56,45 +57,83 @@ fun EditUserScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        TextField(
-            value = userName,
-            onValueChange = { userName = it },
+        OutlinedTextField(
+            value = adminUserState.username,
+            onValueChange = viewModel::onUsernameChange,
             label = { Text("Nombre") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = email,
-            onValueChange = { email = it },
+        OutlinedTextField(
+            value = adminUserState.email,
+            onValueChange = viewModel::onEmailChange,
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = password,
-            onValueChange = { password = it },
+        OutlinedTextField(
+            value = adminUserState.password,
+            onValueChange = viewModel::onPasswordChange,
             label = { Text("Contraseña") },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation()
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RadioButton(
+                    selected = adminUserState.role == UserRole.CLIENT,
+                    onClick = {
+                        viewModel.onRoleChange(UserRole.CLIENT)
+                    }
+                )
+                Text(
+                    text = "Cliente"
+                )
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RadioButton(
+                    selected = adminUserState.role == UserRole.ADMIN,
+                    onClick = {
+                        viewModel.onRoleChange(UserRole.ADMIN)
+                    }
+                )
+                Text(
+                    text = "Administrador"
+                )
+            }
+        }
+
         Button(
             onClick = {
-                user?.let {
-                    val updatedUser = it.copy(userName = userName, email = email, password = password)
-                    viewModel.updateUser(updatedUser) { result ->
-                        if (result.isSuccess) {
-                            Toast.makeText(context, result.getOrNull(), Toast.LENGTH_SHORT).show()
-                            navController.popBackStack()
-                        } else {
-                            Toast.makeText(context, result.exceptionOrNull()?.message, Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
+                viewModel.updateUser()
+                navController.popBackStack()
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Actualizar usuario")
+        }
+
+        adminUserState.successMessage?.let { success ->
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = success,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+
+        adminUserState.errorMessage?.let { error ->
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = error,
+                color = MaterialTheme.colorScheme.error
+            )
         }
     }
 }

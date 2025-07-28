@@ -32,19 +32,13 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.loginepa.navigation.componentside.SideNavigation
 import com.example.loginepa.navigation.typesnavigation.ClientNavigation
-import com.example.loginepa.navigation.layouts.NavigationViewModel
-import com.example.loginepa.screens.client.ClientProfileScreen
-import com.example.loginepa.screens.client.ClientScreen
 
 @Composable
-fun ClientNavigationLayout(navigationViewModel: NavigationViewModel) {
+fun ClientNavigationLayout(navigationViewModel: ViewModelNavigation) {
     val navController = rememberNavController()
     val navigationItems by navigationViewModel.navigationItems.collectAsStateWithLifecycle()
     val navBackStackEntry by navController.currentBackStackEntryAsState()

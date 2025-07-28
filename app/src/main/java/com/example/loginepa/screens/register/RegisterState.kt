@@ -6,7 +6,6 @@ data class RegisterState(
     val username : String = "",
     val email : String = "",
     val password : String = "",
-    val selectedRole : UserRole = UserRole.CLIENT,
     val isLoading : Boolean = false,
     val errorMessage : String? = null,
     val successMessage: String? = null,

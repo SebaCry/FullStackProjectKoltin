@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class NavigationViewModel @Inject constructor(
+class ViewModelNavigation @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 

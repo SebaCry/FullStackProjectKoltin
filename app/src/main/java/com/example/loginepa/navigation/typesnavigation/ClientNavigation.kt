@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.loginepa.screens.admin.users.EditUserScreen
+import com.example.loginepa.screens.client.ClientProductsScreen
 import com.example.loginepa.screens.client.ClientProfileScreen
 import com.example.loginepa.screens.client.ClientScreen
 
@@ -17,7 +19,19 @@ fun ClientNavigation(navController: NavHostController) {
             ClientScreen()
         }
         composable("client_profile") {
-            ClientProfileScreen()
+            ClientProfileScreen(navController)
+        }
+
+        composable("client_products") {
+            ClientProductsScreen(navController)
+        }
+
+        composable("edit_user/{userId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")?.toIntOrNull() ?: 0
+            EditUserScreen(
+                userId = userId,
+                navController = navController
+            )
         }
     }
 }

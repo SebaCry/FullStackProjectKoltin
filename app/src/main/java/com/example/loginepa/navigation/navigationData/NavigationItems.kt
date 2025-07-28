@@ -12,6 +12,7 @@ object NavigationItems {
     val clientItems = listOf(
         NavigationItem("Inicio", Icons.Default.Home, "client_home"),
         NavigationItem("Perfil", Icons.Default.Person, "client_profile"),
+        NavigationItem("Productos", Icons.Default.CardTravel, "client_products")
     )
 
     val adminItems = listOf(
